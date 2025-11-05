@@ -1,7 +1,7 @@
 module.exports = {
     AUTH: {
       LOGIN_SUCCESS: "Login successful",
-      REGISTER_SUCCESS: "Registration successful",
+      REGISTER_SUCCESS: "SignUp successful",
       INVALID_CREDENTIALS: "Invalid email or password",
       UNAUTHORIZED: "You are not authorized to access this resource",
       TOKEN_MISSING: "Authorization token missing",
