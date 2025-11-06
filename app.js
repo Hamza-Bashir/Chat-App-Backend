@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 require("./config/redis")
+const startOrgSubsribe = require("./services/subscriber/orgsubscribe")
 
 const app = express();
 const routes = require("./routes");
@@ -32,5 +33,7 @@ app.use("/api/v1", routes);
 
 app.use(notFound);
 app.use(errorHandler);
+
+startOrgSubsribe()
 
 module.exports = app;
