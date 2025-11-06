@@ -22,5 +22,8 @@ module.exports = {
       UPLOAD_FAIL: "File upload failed",
       INVALID_TYPE: "Invalid file type",
     },
+    ORGANIZATION : {
+      ORG_EXIST: "Organization already exist"
+    }
   };
   
