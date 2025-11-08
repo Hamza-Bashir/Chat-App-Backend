@@ -6,6 +6,7 @@ const code = require("../../constants/httpStatus")
 const message = require("../../constants/messages")
 const {publisher} = require("../../config/redis")
 const Org = require("../../models/organization/index")
+const {hashPassword, comparePassword} = require("../../utilis/bcryptPassword")
 
 
 // -------------------------- add employee --------------------
@@ -32,10 +33,12 @@ const addEmployee = asyncHandler(async (req,res,next) => {
         return next(new AppError(message.ORGANIZATION.NOT_FOUND, code.NOT_FOUND))
     }
 
+    const hashPass = await hashPassword(password, 10)
+
     const newEmployee = await User.create({
         name,
         email,
-        password, 
+        password : hashPass, 
         organizationId : existingOrg._id
     })
 
