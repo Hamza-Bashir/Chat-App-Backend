@@ -1,6 +1,7 @@
 const router = require("express").Router()
-const {addEmployee} = require("../../services/employee")
+const {addEmployee, loginEmployee} = require("../../services/employee")
 
 router.post("/add-employee", addEmployee)
+router.post("/login-employee", loginEmployee)
 
 module.exports = router
