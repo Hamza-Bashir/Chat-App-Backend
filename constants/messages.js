@@ -11,6 +11,7 @@ module.exports = {
     USER: {
       NOT_FOUND: "User not found",
       ALREADY_EXISTS: "User already exists with this email",
+      PASSWORD_NOT_MATCHED: "Password does not match"
     },
   
     SERVER: {
@@ -23,7 +24,8 @@ module.exports = {
       INVALID_TYPE: "Invalid file type",
     },
     ORGANIZATION : {
-      ORG_EXIST: "Organization already exist"
+      ORG_EXIST: "Organization already exist",
+      NOT_FOUND: "Organization not found"
     }
   };
   
