@@ -4,10 +4,12 @@ const groupSchema = new mongoose.Schema({
     groupName: {
         type : String
     },
-    groupAdmin : {
+    groupAdmin : [
+        {
         type : mongoose.Types.ObjectId,
         ref : "User"
-    },
+    }
+],
     groupMember : [
         {
             type : mongoose.Types.ObjectId,

@@ -26,6 +26,9 @@ module.exports = {
     ORGANIZATION : {
       ORG_EXIST: "Organization already exist",
       NOT_FOUND: "Organization not found"
+    },
+    GROUP: {
+      GRP_ALREADY_EXIST: "Group already exist"
     }
   };
   
