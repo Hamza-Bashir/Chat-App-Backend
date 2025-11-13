@@ -49,5 +49,36 @@ const getAllGroup = asyncHandler(async (req,res,next) => {
     Response(res, code.OK, true, "Group Found", {allGroup})
 })
 
+// -------------------- add member in group ------------------
 
-module.exports = {addGroup, getAllGroup}
+const addMember = asyncHandler(async (req,res,next) => {
+
+    const {groupId, employeeId} = req.body
+    const {role} = req.user
+
+    if(role !== "admin"){
+        return next(new AppError(message.AUTH.UNAUTHORIZED, code.UNAUTHORIZED))
+    }
+
+
+    const existingGroup = await Group.findOne({_id : groupId})
+
+    if(!existingGroup){
+        return next(new AppError(message.GROUP.GRP_NOT_FOUND, code.NOT_FOUND))
+    }
+
+    
+
+    if(existingGroup.groupMember.includes(employeeId)){
+        return next(new AppError("This member already exist", 402))
+    }
+
+    existingGroup.groupMember.push(employeeId)
+    await existingGroup.save()
+
+    Response(res, 200, true, "Added Successfully")
+    
+})
+
+
+module.exports = {addGroup, getAllGroup, addMember}
