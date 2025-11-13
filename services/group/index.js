@@ -36,4 +36,18 @@ const addGroup = asyncHandler(async (req,res,next) => {
 })
 
 
-module.exports = {addGroup}
+// -------------------- get all group ------------------
+
+const getAllGroup = asyncHandler(async (req,res,next) => {
+    
+    const allGroup = await Group.find({})
+
+    if(!allGroup){
+        return next(new AppError(message.GROUP.GRP_NOT_FOUND, code.NOT_FOUND))
+    }
+
+    Response(res, code.OK, true, "Group Found", {allGroup})
+})
+
+
+module.exports = {addGroup, getAllGroup}

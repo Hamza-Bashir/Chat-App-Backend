@@ -28,7 +28,8 @@ module.exports = {
       NOT_FOUND: "Organization not found"
     },
     GROUP: {
-      GRP_ALREADY_EXIST: "Group already exist"
+      GRP_ALREADY_EXIST: "Group already exist",
+      GRP_NOT_FOUND: "No group exist"
     }
   };
   
