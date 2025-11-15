@@ -6,6 +6,11 @@ const server = http.createServer(app)
 
 const db = require("./config/db")
 
+const {initSocket} =require("./socket")
+
+initSocket(server)
+
+
 const startServer = ()=>{
     try {
         db()
@@ -19,3 +24,4 @@ const startServer = ()=>{
 }
 
 startServer()
+

@@ -1,3 +1,4 @@
+const { getIo } = require("../../socket");
 const Group = require("../../models/group/index")
 const User = require("../../models/auth/index")
 const AppError = require("../../utilis/AppError")
@@ -5,6 +6,7 @@ const Response = require("../../utilis/sendResponse")
 const asyncHandler = require("../../utilis/asyncHandler")
 const message = require("../../constants/messages")
 const code = require("../../constants/httpStatus")
+
 
 
 // -------------------- add group ------------------
@@ -53,6 +55,7 @@ const getAllGroup = asyncHandler(async (req,res,next) => {
 
 const addMember = asyncHandler(async (req,res,next) => {
 
+
     const {groupId, employeeId} = req.body
     const {role} = req.user
 
@@ -67,7 +70,7 @@ const addMember = asyncHandler(async (req,res,next) => {
         return next(new AppError(message.GROUP.GRP_NOT_FOUND, code.NOT_FOUND))
     }
 
-    
+    const existingUser = await User.findOne({_id : employeeId})  
 
     if(existingGroup.groupMember.includes(employeeId)){
         return next(new AppError("This member already exist", 402))
@@ -76,9 +79,53 @@ const addMember = asyncHandler(async (req,res,next) => {
     existingGroup.groupMember.push(employeeId)
     await existingGroup.save()
 
+    const io = getIo()
+    io.to(groupId.toString()).emit("newMemberJoined", {
+        message : `${existingUser.name} joined`
+    })
+
+
+
     Response(res, 200, true, "Added Successfully")
     
 })
 
 
-module.exports = {addGroup, getAllGroup, addMember}
+// -------------------- remove member in group ------------------
+
+const removeMember = asyncHandler(async (req,res,next) => {
+    const {groupId, employeeId} = req.body
+    const {role} = req.user
+
+    if(role !== "admin"){
+        return next(new AppError(message.AUTH.UNAUTHORIZED, code.UNAUTHORIZED))
+    }
+
+    const existingGroup = await Group.findOne({_id : groupId})
+
+    if(!existingGroup){
+        return next(new AppError(message.GROUP.GRP_NOT_FOUND, code.NOT_FOUND))
+    }
+
+    const existingUser = await User.findOne({_id : employeeId}) 
+
+    if(!existingGroup.groupMember.includes(employeeId)){
+        return next(new AppError("This member cannot exist", 402))
+    }
+
+    console.log(existingGroup.groupMember)
+    existingGroup.groupMember = existingGroup.groupMember.filter((id) => id.toString() !== employeeId )
+    await existingGroup.save()
+    console.log(existingGroup.groupMember)
+
+    const io = getIo()
+    io.to(groupId.toString()).emit("removeMember", {
+        message : `${existingUser.name} removed`
+    })
+
+    Response(res, 200, true, "Remove member successfully")
+
+})
+
+
+module.exports = {addGroup, getAllGroup, addMember, removeMember}
